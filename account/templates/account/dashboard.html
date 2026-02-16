@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard-container">
+  {% if messages %}
+    <div class="dashboard-messages">
+      {% for message in messages %}
+        <div class="dashboard-message {{ message.tags }}">
+          {% if message.tags == 'success' %}
+            <div class="message-icon">✓</div>
+          {% elif message.tags == 'error' %}
+            <div class="message-icon">⚠️</div>
+          {% endif %}
+          <div class="message-text">{{ message }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  <div class="dashboard-content">
+    <h1 class="dashboard-title">Dashboard</h1>
+    <p class="dashboard-welcome">Welcome to dashboard</p>
+  </div>
+</div>
+
+<style>
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 80vh;
+  }
+
+  .dashboard-messages {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    text-align: center;
+  }
+
+  .dashboard-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 40px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.5s ease-out;
+  }
+
+  .dashboard-message.success {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+  }
+
+  .dashboard-message.error {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+  }
+
+  .message-icon {
+    margin-right: 15px;
+    font-size: 30px;
+  }
+
+  .message-text {
+    text-align: center;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dashboard-content {
+    text-align: center;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+  }
+
+  .dashboard-title {
+    color: #2c3e50;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-welcome {
+    color: #7f8c8d;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-title {
+      font-size: 36px;
+    }
+    
+    .dashboard-message {
+      font-size: 20px;
+      padding: 20px 30px;
+    }
+  }
+</style>
+
+<script>
+// Auto-hide messages after 2 seconds
+setTimeout(function() {
+  const messages = document.querySelector('.dashboard-messages');
+  if (messages) {
+    messages.style.transition = 'opacity 0.5s ease-out';
+    messages.style.opacity = '0';
+    setTimeout(function() {
+      messages.remove();
+    }, 500);
+  }
+}, 2000);
+</script>
+{% endblock %}

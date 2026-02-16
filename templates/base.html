@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>My Site</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .navbar {
+      background-color: #2ecc71;
+      padding: 0 20px;
+    }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 50px;
+    }
+    
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+    }
+    
+    .nav-user {
+      color: white;
+    }
+    
+    .logout-link {
+      color: white;
+      text-decoration: underline;
+    }
+    
+    .logout-btn {
+      background: none;
+      border: none;
+      color: white;
+      text-decoration: underline;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      padding: 0;
+      font-size: inherit;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-container">
+      <ul class="nav-links">
+        {% if user.is_authenticated %}
+          <li><a href="/dashboard">Bookmarks</a></li>
+          <li><a href="/account/">My dashboard</a></li>
+          <li><a href="/images">Images</a></li>
+          <li><a href="/people">People</a></li>
+        {% endif %}
+      </ul>
+      
+      <div class="nav-user">
+        {% if user.is_authenticated %}
+          Hello, {{ user.username }}, 
+          <form action="{% url 'logout' %}" method="post" style="display:inline;" onsubmit="return confirmLogout();">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" style="color: white;">Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% block content %}{% endblock %}
+  
+  <script>
+    function confirmLogout() {
+      return confirm('Are you sure you want to logout?');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Blog</title>
+</head>
+<body>
+<h1>Blog Posts</h1>
+
+<!-- Search form -->
+<form action="{% url 'blog:post_search' %}" method="get">
+    <input type="text" name="query" placeholder="Search blog...">
+    <button type="submit">Search</button>
+</form>
+
+{% for post in posts %}
+    <h2>
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+    </h2>
+    <p>{{ post.publish }}</p>
+    <p>{{ post.body|truncatewords_html:30|markdown }}</p>
+        <p class="tags">
+            Tags:
+            {% for tag in post.tags.all %}
+                <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                    {{ tag.name }}
+                </a>
+            {% empty %}
+                No tags
+            {% endfor %}
+        </p>
+{% endfor %}
+
+</body>
+</html>
